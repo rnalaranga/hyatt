@@ -33,6 +33,12 @@
     
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+
+    // Update theme-color meta tag dynamically
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', newTheme === 'light' ? '#F7F5F0' : '#080808');
+    }
   });
 })();
 
@@ -189,20 +195,6 @@
     scroll.scrollLeft = scrollLeft - walk;
   });
 
-  // Touch support
-  let touchStartX = 0;
-  let touchScrollLeft = 0;
-
-  scroll.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].pageX;
-    touchScrollLeft = scroll.scrollLeft;
-  }, { passive: true });
-
-  scroll.addEventListener('touchmove', (e) => {
-    const x = e.touches[0].pageX;
-    const walk = (touchStartX - x) * 1.2;
-    scroll.scrollLeft = touchScrollLeft + walk;
-  }, { passive: true });
 })();
 
 // ─── PORTFOLIO FILTER ────────────────────────────────────────────────────────────

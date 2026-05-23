@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
   <title>{{TITLE}}</title>
   <meta name="description" content="{{DESCRIPTION}}">
   <link rel="canonical" href="{{CANONICAL}}">
@@ -67,12 +68,18 @@
   <script>
     (function() {
       const savedTheme = localStorage.getItem('theme');
+      let activeTheme = 'dark';
       if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        activeTheme = savedTheme;
       } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
+        activeTheme = 'light';
+      }
+      document.documentElement.setAttribute('data-theme', activeTheme);
+      
+      // Update theme-color meta tag immediately
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', activeTheme === 'light' ? '#F7F5F0' : '#080808');
       }
     })();
   </script>
