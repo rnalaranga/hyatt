@@ -841,24 +841,56 @@ button {
   opacity: 1;
 }
 
-/* Mobile: Stack vertical panels vertically */
+/* Mobile: Horizontal touch swipe slider for the 3 portrait panels! */
 @media (max-width: 768px) {
   .hero-split-grid {
-    flex-direction: column;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-  
+
+  .hero-split-grid::-webkit-scrollbar {
+    display: none;
+  }
+
   .hero-panel {
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: var(--space-lg) var(--gutter);
-  }
-  
-  [data-theme="light"] .hero-panel {
-    border-bottom-color: rgba(0, 0, 0, 0.05);
+    border-right: none !important;
+    border-bottom: none !important;
+    flex: 0 0 100% !important; /* Full width per portrait panel! */
+    width: 100% !important;
+    height: 100vh !important;
+    scroll-snap-align: start !important;
+    padding: var(--space-2xl) var(--gutter) var(--space-xl) !important;
   }
 
   .hero-panel:hover {
-    flex: 1.2;
+    flex: 0 0 100% !important;
+  }
+
+  /* Add a dynamic hint on mobile so users know they can swipe */
+  .hero-split-grid::after {
+    content: 'Swipe to explore →';
+    position: absolute;
+    bottom: var(--gutter);
+    left: var(--gutter);
+    z-index: 10;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--highlight);
+    opacity: 0.55;
+    pointer-events: none;
+    animation: swipePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes swipePulse {
+    0%, 100% { opacity: 0.3; transform: translateX(0); }
+    50% { opacity: 0.7; transform: translateX(5px); }
   }
 }
 
@@ -2270,6 +2302,28 @@ a.contact-detail-value:hover {
     margin-top: var(--space-sm);
     padding: 1rem 2.5rem;
     font-size: 0.9rem;
+  }
+
+  /* Light Theme Mobile Nav Overrides */
+  [data-theme="light"] .nav-menu {
+    background: rgba(247, 245, 240, 0.98) !important;
+  }
+  
+  [data-theme="light"] .nav-link {
+    color: rgba(0, 0, 0, 0.55) !important;
+  }
+
+  [data-theme="light"] .nav-link:hover,
+  [data-theme="light"] .nav-link.active-page {
+    color: #121212 !important;
+  }
+
+  [data-theme="light"] .nav-link.active-page::before {
+    background: #121212 !important;
+  }
+
+  [data-theme="light"] .hamburger-line {
+    background: #121212 !important;
   }
 
   /* Layout */
