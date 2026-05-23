@@ -1,0 +1,14 @@
+{
+  "name": "hyatt-photography",
+  "version": "1.0.0",
+  "description": "Hyatt Photography — Premium Photography Studio in Australia",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.1",
+    "express": "^4.21.0"
+  }
+}

@@ -1,0 +1,167 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- CONTACT PAGE                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<main id="main-content">
+
+  <!-- ─── CONTACT HERO ─────────────────────────────────────────────────────── -->
+  <section class="page-hero page-hero--short parallax-section" id="contact-hero">
+    <div class="parallax-bg-wrap">
+      <div class="img-placeholder parallax-bg" data-placeholder="Contact hero photo (1920×500)"></div>
+    </div>
+    <div class="parallax-overlay"></div>
+    <div class="container parallax-content reveal-up">
+      <span class="section-eyebrow">GET IN TOUCH</span>
+      <h1 class="page-hero-title">Contact</h1>
+      <p class="page-hero-sub">We'd love to hear about your upcoming project</p>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT FORM + INFO ──────────────────────────────────────────────── -->
+  <section class="section section-contact" id="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        
+        <!-- Contact Form -->
+        <div class="contact-form-wrap reveal-up">
+          <h2 class="section-title">Send Us a <em>Message</em></h2>
+          <p class="contact-intro">Tell us about your project and we'll get back to you within 24 hours.</p>
+          
+          <form class="contact-form" id="contact-form" action="/contact" method="POST" novalidate>
+            <div class="form-group">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required autocomplete="name">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone (optional)</label>
+                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+61 XXX XXX XXX" autocomplete="tel">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="service" class="form-label">Service Interested In</label>
+              <select id="service" name="service" class="form-input form-select">
+                <option value="" disabled selected>Select a service</option>
+                <option value="wedding">Wedding Photography</option>
+                <option value="portrait">Portrait Session</option>
+                <option value="commercial">Commercial / Brand</option>
+                <option value="landscape">Landscape / Nature</option>
+                <option value="event">Event Coverage</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message" class="form-label">Your Message</label>
+              <textarea id="message" name="message" class="form-input form-textarea" rows="5" placeholder="Tell us about your vision, preferred dates, location, and any other details..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large btn-full" id="submit-btn">
+              <span class="btn-text">Send Inquiry</span>
+              <span class="btn-loader" hidden>Sending...</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Info Sidebar -->
+        <div class="contact-info reveal-up reveal-delay-1">
+          <div class="contact-info-card">
+            <h3>Get in Touch</h3>
+            <ul class="contact-details">
+              <li class="contact-detail">
+                <div class="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-label">Email</span>
+                  <a href="mailto:hello@hyattphotography.au" class="contact-detail-value">hello@hyattphotography.au</a>
+                </div>
+              </li>
+              <li class="contact-detail">
+                <div class="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-label">Phone</span>
+                  <a href="tel:+61XXXXXXXXX" class="contact-detail-value">+61 XXX XXX XXX</a>
+                </div>
+              </li>
+              <li class="contact-detail">
+                <div class="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-label">Location</span>
+                  <span class="contact-detail-value">Australia-wide</span>
+                </div>
+              </li>
+              <li class="contact-detail">
+                <div class="contact-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-label">Response Time</span>
+                  <span class="contact-detail-value">Within 24 hours</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="contact-info-card contact-social-card">
+            <h3>Follow Us</h3>
+            <p>Stay inspired with our latest work and behind-the-scenes content.</p>
+            <div class="contact-socials">
+              <a href="https://www.instagram.com/hyattphotography" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Instagram">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                <span>Instagram</span>
+              </a>
+              <a href="https://www.facebook.com/hyattphotography" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Facebook">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                <span>Facebook</span>
+              </a>
+              <a href="https://www.tiktok.com/@hyattphotography" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="TikTok">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                <span>TikTok</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ──────────────────────────────────────────────────────────────── -->
+  <section class="section section-faq" id="faq-section">
+    <div class="container container--narrow">
+      <div class="section-header reveal-up">
+        <span class="section-eyebrow">QUESTIONS?</span>
+        <h2 class="section-title">Frequently <em>Asked</em></h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal-up">
+          <summary class="faq-question">How far in advance should I book?</summary>
+          <p class="faq-answer">For weddings, we recommend booking 6-12 months in advance. For portraits and commercial work, 2-4 weeks notice is ideal, though we accommodate rush requests when possible.</p>
+        </details>
+        <details class="faq-item reveal-up reveal-delay-1">
+          <summary class="faq-question">What areas do you cover?</summary>
+          <p class="faq-answer">We're based in Australia and available for shoots nationwide. We also travel internationally for destination weddings and special projects.</p>
+        </details>
+        <details class="faq-item reveal-up reveal-delay-2">
+          <summary class="faq-question">How long until I receive my photos?</summary>
+          <p class="faq-answer">Turnaround times vary by project: weddings typically 4-6 weeks, portraits 1-2 weeks, and commercial work depends on scope. A sneak peek gallery is usually shared within 48 hours.</p>
+        </details>
+        <details class="faq-item reveal-up">
+          <summary class="faq-question">Do you offer videography as well?</summary>
+          <p class="faq-answer">Yes! We offer combined photography and videography packages. Contact us to discuss your needs and we'll craft a package that suits your vision.</p>
+        </details>
+        <details class="faq-item reveal-up reveal-delay-1">
+          <summary class="faq-question">What's your pricing?</summary>
+          <p class="faq-answer">Every project is unique, so we provide custom quotes based on your specific needs. Get in touch with details about your shoot and we'll put together a tailored proposal.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
