@@ -1839,12 +1839,21 @@ button {
   border-radius: var(--radius-md);
 }
 
-.bts-item .img-placeholder {
-  min-height: 350px;
+.bts-item .img-placeholder,
+.bts-item img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
   transition: transform var(--duration-slow) var(--ease-out-expo);
 }
 
-.bts-item:hover .img-placeholder {
+.bts-item .img-placeholder {
+  min-height: 350px;
+}
+
+.bts-item:hover .img-placeholder,
+.bts-item:hover img {
   transform: scale(1.05);
 }
 
