@@ -22,25 +22,25 @@ const seoData = {
     title: 'Hyatt Photography | Premium Photography Studio — Australia',
     description: 'Award-winning photography studio in Australia. Specialising in weddings, portraits, commercial & landscape photography. Book your session today.',
     canonical: 'https://hyattphotography.au/',
-    ogImage: 'https://hyattphotography.au/images/og-home.jpg',
+    ogImage: 'https://hyattphotography.au/images/og-home.webp',
   },
   portfolio: {
     title: 'Portfolio | Hyatt Photography — Our Finest Work',
     description: 'Explore our curated portfolio of stunning wedding photography, intimate portraits, breathtaking landscapes and commercial shoots across Australia.',
     canonical: 'https://hyattphotography.au/portfolio',
-    ogImage: 'https://hyattphotography.au/images/og-portfolio.jpg',
+    ogImage: 'https://hyattphotography.au/images/og-portfolio.webp',
   },
   about: {
     title: 'About | Hyatt Photography — Our Story & Vision',
     description: 'Discover the story behind Hyatt Photography. Learn about our philosophy, creative approach, and passion for capturing life\'s most extraordinary moments.',
     canonical: 'https://hyattphotography.au/about',
-    ogImage: 'https://hyattphotography.au/images/og-about.jpg',
+    ogImage: 'https://hyattphotography.au/images/og-about.webp',
   },
   contact: {
     title: 'Contact | Hyatt Photography — Book Your Session',
     description: 'Ready to create something extraordinary? Get in touch with Hyatt Photography to discuss your vision and book your photography session in Australia.',
     canonical: 'https://hyattphotography.au/contact',
-    ogImage: 'https://hyattphotography.au/images/og-contact.jpg',
+    ogImage: 'https://hyattphotography.au/images/og-contact.webp',
   },
 };
 
