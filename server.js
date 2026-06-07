@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Gzip/Brotli compression for fast delivery of HTML/CSS/JS assets
 app.use(compression());
 
-// Static files
+// Static files (Vercel handles public folder, but keeping this for local and fallback)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Body parser for contact form
@@ -44,12 +44,13 @@ const seoData = {
   },
 };
 
-// ─── Template Engine (Simple SSR) ─────────────────────────────────────────────
+// ─── Template Engine (Simple SSR - Updated for Vercel Serverless Paths) ─────────
 function renderPage(page, seo) {
-  const head = fs.readFileSync(path.join(__dirname, 'views', 'partials', 'head.html'), 'utf-8');
-  const nav = fs.readFileSync(path.join(__dirname, 'views', 'partials', 'nav.html'), 'utf-8');
-  const footer = fs.readFileSync(path.join(__dirname, 'views', 'partials', 'footer.html'), 'utf-8');
-  const body = fs.readFileSync(path.join(__dirname, 'views', `${page}.html`), 'utf-8');
+  // process.cwd() used to guarantee correct root path inside Vercel environment
+  const head = fs.readFileSync(path.join(process.cwd(), 'views', 'partials', 'head.html'), 'utf-8');
+  const nav = fs.readFileSync(path.join(process.cwd(), 'views', 'partials', 'nav.html'), 'utf-8');
+  const footer = fs.readFileSync(path.join(process.cwd(), 'views', 'partials', 'footer.html'), 'utf-8');
+  const body = fs.readFileSync(path.join(process.cwd(), 'views', `${page}.html`), 'utf-8');
 
   let html = head
     .replace(/{{TITLE}}/g, seo.title)
@@ -119,7 +120,12 @@ app.use((req, res) => {
   }));
 });
 
-// ─── Start Server ─────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n  ✦ Hyatt Photography running at http://localhost:${PORT}\n`);
-});
+// ─── Start Server (Only for Local Development) ────────────────────────────────
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`\n  ✦ Hyatt Photography running at http://localhost:${PORT}\n`);
+  });
+}
+
+// Export the Express app for Vercel Serverless Functions
+module.exports = app;
