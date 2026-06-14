@@ -2569,7 +2569,7 @@ body::after {
 
 @media (max-width: 768px) {
   .whatsapp-float {
-    bottom: 2rem;
+    bottom: 5.5rem;
     right: 1.5rem;
     width: 52px;
     height: 52px;
@@ -2577,5 +2577,617 @@ body::after {
   .whatsapp-float svg {
     width: 22px;
     height: 22px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE FLOATING BOTTOM NAVIGATION DOCK
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.mobile-bottom-nav {
+  display: none; /* Hidden by default on desktop */
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: block;
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 2.5rem);
+    max-width: 420px;
+    height: 60px;
+    z-index: 9998;
+    border-radius: 30px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: background-color var(--duration) var(--ease-out-quart),
+                border var(--duration) var(--ease-out-quart),
+                box-shadow var(--duration) var(--ease-out-quart);
+  }
+
+  [data-theme="dark"] .mobile-bottom-nav {
+    background: rgba(15, 15, 15, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  [data-theme="light"] .mobile-bottom-nav {
+    background: rgba(247, 245, 240, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  }
+
+  .bottom-nav-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    padding: 0 0.75rem;
+  }
+
+  .bottom-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    flex: 1;
+  }
+
+  .bottom-nav-link svg {
+    stroke-width: 1.5;
+    transition: stroke 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bottom-nav-link span {
+    font-size: 0.58rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  /* Active State Highlight */
+  .bottom-nav-link.active-page {
+    color: var(--highlight, #BFA58A);
+  }
+
+  .bottom-nav-link.active-page svg {
+    stroke: var(--highlight, #BFA58A);
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  /* Active Page Micro-dot indicator */
+  .bottom-nav-link.active-page::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--highlight, #BFA58A);
+    box-shadow: 0 0 8px var(--highlight, #BFA58A);
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes scaleIn {
+  from { transform: translateX(-50%) scale(0); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CAMERA SHUTTER FLASH OVERLAYS
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.loader-canvas-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Fullscreen Camera Shutter Flash overlay */
+.camera-flash {
+  position: fixed;
+  inset: 0;
+  background: #FFFFFF;
+  z-index: 100000;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Rapid Lightbox Shutter Flash */
+.camera-flash-shutter {
+  position: fixed;
+  inset: 0;
+  background: #FFFFFF;
+  z-index: 100001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+}
+
+.camera-flash-shutter.active {
+  opacity: 1;
+  transition: opacity 0.05s ease-in;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   INTERACTIVE CAMERA VIEWFINDER & CHASSIS (Apple style)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.section-viewfinder-pin {
+  position: relative;
+  height: 350vh; /* Scroll track height to allow pinning */
+  background: var(--bg-secondary);
+  transition: background-color var(--duration) var(--ease-out-quart);
+}
+
+.viewfinder-sticky-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.viewfinder-sticky-container .container {
+  width: 100%;
+}
+
+.viewfinder-wrapper {
+  perspective: 1000px;
+  padding: var(--space-md) 0;
+}
+
+/* The Camera Chassis back frame */
+.camera-body {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  aspect-ratio: 1.6 / 1;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #2a2a2a 0%, #151515 50%, #0f0f0f 100%);
+  border: 8px solid #1a1a1a;
+  border-radius: 24px;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.08),
+              0 30px 80px rgba(0, 0, 0, 0.45);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+
+/* Shutter snap mechanical kick effect */
+.camera-body.shutter-clicked {
+  transform: scale(0.982) translateY(2px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Top mechanical dials */
+.camera-dial {
+  position: absolute;
+  width: 56px;
+  height: 14px;
+  background: linear-gradient(90deg, #181818 0%, #3a3a3a 50%, #181818 100%);
+  border-bottom: 2px solid #101010;
+  border-radius: 4px 4px 0 0;
+  top: -20px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  z-index: -1;
+}
+
+.dial-left { left: 40px; }
+.dial-right { right: 120px; }
+
+/* Metallic Shutter Button */
+.camera-shutter-button {
+  position: absolute;
+  width: 48px;
+  height: 18px;
+  background: linear-gradient(to top, #2e2e2e 0%, #4a4a4a 40%, #7c7c7c 100%);
+  border: 2px solid #141414;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  top: -24px;
+  right: 40px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2),
+              0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: -1;
+  transition: transform 0.1s ease;
+  cursor: pointer;
+}
+
+.camera-shutter-button.clicked {
+  transform: translateY(4px);
+}
+
+/* Physical Flash Bulb on the chassis */
+.camera-flash-bulb {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 12px;
+  background: #0a0a0a;
+  border-radius: 4px;
+  border: 1px solid #2a2a2a;
+  border-bottom-color: #050505;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
+  z-index: 10;
+}
+
+/* The actual light emitting diode/strip */
+.camera-flash-bulb::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 2px;
+  opacity: 0.15; /* Off state */
+  transition: opacity 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+/* Flash active state with explosive glow */
+.camera-flash-bulb.active::after {
+  opacity: 1;
+  box-shadow: 0 0 100px 50px rgba(255, 255, 255, 1),
+              0 0 250px 150px rgba(255, 255, 255, 0.9),
+              0 0 500px 300px rgba(255, 255, 255, 0.8),
+              0 -150px 300px 150px rgba(255, 255, 255, 0.6);
+  z-index: 99999;
+}
+
+/* The Viewfinder LCD Display Screen */
+.camera-screen {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 24px;
+  right: 110px;
+  background: #000000;
+  border: 4px solid #101010;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 6px 20px rgba(0, 0, 0, 0.95);
+}
+
+/* Image container and scroll-zoom */
+.screen-image-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Vertical filmstrip container holding slides */
+.screen-filmstrip {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 300%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filmstrip-slide {
+  position: relative;
+  width: 100%;
+  height: 33.333%;
+  overflow: hidden;
+}
+
+.filmstrip-slide .screen-parallax-img {
+  width: 100%;
+  height: 120%; /* Slight height buffer for internal scroll parallax */
+  object-fit: cover;
+  position: absolute;
+  top: -10%;
+  left: 0;
+  filter: contrast(105%) brightness(95%);
+  transition: transform 0.15s ease-out;
+}
+
+/* Local LCD Shutter Flash overlay */
+.screen-shutter-flash {
+  position: absolute;
+  inset: 0;
+  background: #FFFFFF;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.screen-shutter-flash.active {
+  animation: flashLCD ShutterDuration ease-out both;
+}
+
+@keyframes flashLCD {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Shutter Flash Animation helper */
+.screen-shutter-flash.active {
+  animation: flashLCD 0.3s cubic-bezier(0.1, 0.8, 0.3, 1) both;
+}
+
+/* LCD Rule-of-thirds gridlines */
+.lcd-gridlines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gridline-v, .gridline-h {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.gridline-v { top: 0; bottom: 0; width: 1px; }
+.gridline-h { left: 0; right: 0; height: 1px; }
+
+.v1 { left: 33.33%; }
+.v2 { left: 66.66%; }
+.h1 { top: 33.33%; }
+.h2 { top: 66.66%; }
+
+/* HUD Information Grid */
+.hud-top, .hud-bottom {
+  position: absolute;
+  z-index: 3;
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 12px;
+  pointer-events: none;
+}
+
+.hud-top {
+  top: 10px;
+}
+
+.hud-bottom {
+  bottom: 10px;
+}
+
+.hud-battery {
+  color: #4caf50;
+}
+
+/* Auto-Focus Brackets Frame */
+.hud-focus-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 76px;
+  height: 76px;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-bracket {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  transition: border-color 0.2s, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bracket-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+.bracket-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+.bracket-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+.bracket-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+.focus-status {
+  position: absolute;
+  bottom: -20px;
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+/* Focus Locked Active state */
+.hud-focus-box.focused .focus-bracket {
+  border-color: #4caf50;
+  transform: scale(0.88);
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
+}
+
+.hud-focus-box.focused .focus-status {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.hud-focus-box.focused::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #4caf50;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #4caf50;
+}
+
+/* Right-side camera buttons & D-pad chassis controls */
+.camera-controls {
+  position: absolute;
+  right: 12px;
+  top: 24px;
+  bottom: 24px;
+  width: 86px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.control-button {
+  width: 44px;
+  height: 18px;
+  background: linear-gradient(135deg, #333333 0%, #222222 100%);
+  border: 1px solid #181818;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.control-button span {
+  font-family: monospace;
+  font-size: 7px;
+  color: #888888;
+}
+
+.control-dpad {
+  width: 48px;
+  height: 48px;
+  background: radial-gradient(circle, #2a2a2a 0%, #1c1c1c 80%);
+  border: 2px solid #141414;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.dpad-center {
+  width: 22px;
+  height: 22px;
+  background: #252525;
+  border: 1px solid #121212;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dpad-center span {
+  font-family: monospace;
+  font-size: 7px;
+  color: #666666;
+  font-weight: bold;
+}
+
+/* Responsive Scaling for smaller screens */
+@media (max-width: 576px) {
+  .camera-body {
+    border-width: 5px;
+    border-radius: 16px;
+  }
+
+  .camera-screen {
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 64px;
+    border-width: 2px;
+  }
+
+  .camera-controls {
+    right: 4px;
+    width: 56px;
+    top: 10px;
+    bottom: 10px;
+  }
+
+  .control-button {
+    width: 32px;
+    height: 14px;
+  }
+
+  .control-button span {
+    font-size: 6px;
+  }
+
+  .control-dpad {
+    width: 34px;
+    height: 34px;
+  }
+
+  .dpad-center {
+    width: 16px;
+    height: 16px;
+  }
+
+  .dpad-center span {
+    font-size: 5px;
+  }
+
+  .camera-dial {
+    width: 36px;
+    height: 10px;
+    top: -14px;
+  }
+
+  .dial-left { left: 20px; }
+  .dial-right { right: 80px; }
+
+  .camera-shutter-button {
+    width: 32px;
+    height: 12px;
+    top: -16px;
+    right: 20px;
+  }
+
+  .hud-focus-box {
+    width: 48px;
+    height: 48px;
+  }
+
+  .focus-bracket {
+    width: 8px;
+    height: 8px;
+  }
+
+  .hud-top, .hud-bottom {
+    font-size: 7px;
+    padding: 0 8px;
+  }
+
+  .hud-top { top: 6px; }
+  .hud-bottom { bottom: 6px; }
+
+  .focus-status {
+    bottom: -15px;
+    font-size: 6px;
   }
 }

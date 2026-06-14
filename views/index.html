@@ -78,6 +78,94 @@
     </div>
   </section>
 
+  <!-- ─── INTERACTIVE CAMERA VIEWFINDER SECTION ────────────────────────────── -->
+  <section class="section-viewfinder-pin" id="viewfinder-pin-section">
+    <div class="viewfinder-sticky-container">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">BEHIND THE LENS</span>
+          <h2 class="section-title">The Art of <em>Focus</em></h2>
+        </div>
+        
+        <div class="viewfinder-wrapper">
+          <!-- Camera Body Frame -->
+          <div class="camera-body" id="camera-chassis">
+            <!-- Top dials and shutter button -->
+            <div class="camera-dial dial-left"></div>
+            <div class="camera-dial dial-right"></div>
+            <div class="camera-shutter-button" id="camera-shutter-btn"></div>
+            
+            <!-- Physical camera flash bulb -->
+            <div class="camera-flash-bulb" id="camera-flash-bulb"></div>
+
+            <!-- Camera LCD screen -->
+            <div class="camera-screen" id="camera-lcd-screen">
+              <!-- Shutter Flash inside LCD -->
+              <div class="screen-shutter-flash" id="lcd-shutter-flash"></div>
+              
+              <!-- Filmstrip container containing multiple images -->
+              <div class="screen-image-wrap">
+                <div class="screen-filmstrip" id="viewfinder-filmstrip">
+                  <div class="filmstrip-slide">
+                    <img src="/images/hyatt_landscape.webp" alt="Viewfinder Capture 1" class="screen-parallax-img" id="viewfinder-img-1" decoding="async">
+                  </div>
+                  <div class="filmstrip-slide">
+                    <img src="/images/wedding_landscape2.webp" alt="Viewfinder Capture 2" class="screen-parallax-img" id="viewfinder-img-2" decoding="async">
+                  </div>
+                  <div class="filmstrip-slide">
+                    <img src="/images/hyatt_landscape2.webp" alt="Viewfinder Capture 3" class="screen-parallax-img" id="viewfinder-img-3" decoding="async">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- HUD top grid -->
+              <div class="hud-top">
+                <span class="hud-mode">M</span>
+                <span class="hud-quality">RAW 3:2</span>
+                <span class="hud-battery">⚡ 100%</span>
+              </div>
+              
+              <!-- LCD gridlines -->
+              <div class="lcd-gridlines">
+                <div class="gridline-v v1"></div>
+                <div class="gridline-v v2"></div>
+                <div class="gridline-h h1"></div>
+                <div class="gridline-h h2"></div>
+              </div>
+              
+              <!-- Auto-Focus Tracking Box -->
+              <div class="hud-focus-box" id="hud-focus-indicator">
+                <div class="focus-bracket bracket-tl"></div>
+                <div class="focus-bracket bracket-tr"></div>
+                <div class="focus-bracket bracket-bl"></div>
+                <div class="focus-bracket bracket-br"></div>
+                <span class="focus-status">AF-C</span>
+              </div>
+              
+              <!-- HUD bottom settings -->
+              <div class="hud-bottom">
+                <span class="hud-shutter">1/250</span>
+                <span class="hud-aperture">f/1.2</span>
+                <span class="hud-exposure">MM. +0.3</span>
+                <span class="hud-iso">ISO 100</span>
+              </div>
+            </div>
+
+            <!-- D-pad controls and grips on the right of LCD screen -->
+            <div class="camera-controls">
+              <div class="control-button btn-menu"><span>MENU</span></div>
+              <div class="control-dpad">
+                <div class="dpad-center"><span>SET</span></div>
+              </div>
+              <div class="control-button btn-play"><span>▶</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ─── FEATURED WORK — HORIZONTAL SCROLL ────────────────────────────────── -->
   <section class="section section-featured" id="featured-section">
     <div class="container">

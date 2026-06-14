@@ -5,22 +5,194 @@
 
 'use strict';
 
-// ─── PAGE LOADER ────────────────────────────────────────────────────────────────
+// ─── PAGE LOADER (3D Camera Shutter & Flash) ──────────────────────────────────────
 (function initLoader() {
   const loader = document.createElement('div');
   loader.className = 'page-loader';
-  loader.innerHTML = '<span class="loader-logo">HYATT</span>';
+  
+  const logo = document.createElement('span');
+  logo.className = 'loader-logo';
+  logo.textContent = 'HYATT';
+  loader.appendChild(logo);
+  
+  const canvasContainer = document.createElement('div');
+  canvasContainer.className = 'loader-canvas-container';
+  loader.appendChild(canvasContainer);
+  
   document.body.appendChild(loader);
   document.body.classList.add('loading');
 
+  let shutterInstance = null;
+  let hasLoaded = false;
+  let minTimePassed = false;
+
+  // Let the premium 3D loader play for at least 1s
+  setTimeout(() => {
+    minTimePassed = true;
+    checkAndClose();
+  }, 1000);
+
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      loader.classList.add('loaded');
-      document.body.classList.remove('loading');
-      setTimeout(() => loader.remove(), 700);
-    }, 400);
+    hasLoaded = true;
+    checkAndClose();
   });
+
+  function checkAndClose() {
+    if (hasLoaded && minTimePassed) {
+      if (shutterInstance) {
+        shutterInstance.closeShutter();
+      } else {
+        // Fallback for offline / blocked CDN cases
+        triggerCameraFlash(() => {
+          loader.classList.add('loaded');
+          document.body.classList.remove('loading');
+          setTimeout(() => loader.remove(), 700);
+        });
+      }
+    }
+  }
+
+  function initThreeShutter() {
+    if (typeof THREE === 'undefined') return null;
+
+    try {
+      const width = 200;
+      const height = 200;
+      const scene = new THREE.Scene();
+      
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+      camera.position.z = 1;
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      canvasContainer.appendChild(renderer.domElement);
+
+      const shutterGroup = new THREE.Group();
+      scene.add(shutterGroup);
+
+      const numBlades = 8;
+      const blades = [];
+      
+      // Aperture blade profile shape
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 0);
+      shape.lineTo(0.5, 0.12);
+      shape.lineTo(0.38, 0.52);
+      shape.lineTo(-0.12, 0.38);
+      shape.closePath();
+
+      const geometry = new THREE.ShapeGeometry(shape);
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const bladeColor = isLight ? 0x121212 : 0xBFA58A;
+      
+      const material = new THREE.MeshBasicMaterial({
+        color: bladeColor,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.85
+      });
+
+      for (let i = 0; i < numBlades; i++) {
+        const blade = new THREE.Mesh(geometry, material);
+        const angle = (i / numBlades) * Math.PI * 2;
+        
+        const pivot = new THREE.Group();
+        pivot.rotation.z = angle;
+        
+        const radius = 0.34;
+        blade.position.x = radius;
+        blade.rotation.z = 0.15;
+        
+        pivot.add(blade);
+        shutterGroup.add(pivot);
+        blades.push({ pivot, blade, initialRadius: radius });
+      }
+
+      // Ring details
+      const ringGeo = new THREE.RingGeometry(0.52, 0.54, 64);
+      const ringMat = new THREE.MeshBasicMaterial({ color: bladeColor, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      scene.add(ring);
+
+      const innerRingGeo = new THREE.RingGeometry(0.56, 0.57, 64);
+      const innerRingMat = new THREE.MeshBasicMaterial({ color: bladeColor, side: THREE.DoubleSide, transparent: true, opacity: 0.2 });
+      const innerRing = new THREE.Mesh(innerRingGeo, innerRingMat);
+      scene.add(innerRing);
+
+      let animationTime = 0;
+      let isClosing = false;
+      let closeProgress = 0;
+      let clickScale = 1;
+
+      function animate() {
+        if (!loader.parentNode) return;
+        requestAnimationFrame(animate);
+
+        animationTime += 0.008;
+
+        if (!isClosing) {
+          shutterGroup.rotation.z = animationTime * 0.4;
+        } else {
+          if (closeProgress < 1) {
+            closeProgress += 0.12;
+            const eased = Math.min(closeProgress, 1);
+            
+            blades.forEach((b) => {
+              b.blade.position.x = b.initialRadius * (1 - eased * 0.95);
+              b.blade.rotation.z = 0.15 + eased * 0.95;
+            });
+            
+            shutterGroup.rotation.z += 0.12;
+            clickScale = 1 - Math.sin(eased * Math.PI) * 0.15;
+            canvasContainer.style.transform = `translate(-50%, -50%) scale(${clickScale})`;
+          } else {
+            triggerCameraFlash(() => {
+              loader.classList.add('loaded');
+              document.body.classList.remove('loading');
+              setTimeout(() => loader.remove(), 700);
+            });
+            return;
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      return {
+        closeShutter: () => {
+          isClosing = true;
+        }
+      };
+    } catch (e) {
+      console.warn("Three.js initialisation failed, using fallback loader:", e);
+      return null;
+    }
+  }
+
+  // Load Three.js 3D logic shortly after DOM paint
+  setTimeout(() => {
+    shutterInstance = initThreeShutter();
+  }, 50);
 })();
+
+// Fullscreen Camera Flash Overlay trigger
+function triggerCameraFlash(onFlashComplete) {
+  const flash = document.createElement('div');
+  flash.className = 'camera-flash';
+  document.body.appendChild(flash);
+
+  // Force DOM reflow
+  flash.offsetHeight;
+
+  requestAnimationFrame(() => {
+    if (onFlashComplete) onFlashComplete();
+    flash.style.opacity = '0';
+    setTimeout(() => flash.remove(), 800);
+  });
+}
 
 // ─── THEME MANAGER ───────────────────────────────────────────────────────────────
 (function initTheme() {
@@ -33,12 +205,6 @@
     
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
-
-    // Update theme-color meta tag dynamically
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', newTheme === 'light' ? '#F7F5F0' : '#080808');
-    }
   });
 })();
 
@@ -146,6 +312,18 @@
         link.classList.add('active-page');
       }
     });
+
+    // Mark current page link active in mobile bottom navigation dock
+    const bottomNav = document.querySelector('.mobile-bottom-nav');
+    if (bottomNav) {
+      bottomNav.querySelectorAll('.bottom-nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPath || (currentPath === '/' && href === '/') ||
+            (currentPath !== '/' && href !== '/' && currentPath.startsWith(href))) {
+          link.classList.add('active-page');
+        }
+      });
+    }
   }
 })();
 
@@ -264,8 +442,27 @@
   const items = Array.from(document.querySelectorAll('.masonry-item'));
   let currentIndex = 0;
 
+  function triggerLightboxFlash() {
+    const flash = document.createElement('div');
+    flash.className = 'camera-flash-shutter';
+    document.body.appendChild(flash);
+    
+    // Force DOM repaint
+    flash.offsetHeight;
+    
+    flash.classList.add('active');
+    setTimeout(() => {
+      flash.classList.remove('active');
+      setTimeout(() => flash.remove(), 200);
+    }, 80);
+  }
+
   function openLightbox(index) {
     currentIndex = index;
+    
+    // Trigger rapid visual camera click flash transition
+    triggerLightboxFlash();
+    
     const item = items[index];
     if (!item) return;
 
@@ -477,6 +674,143 @@
     }
 
     tick = false;
+  }
+})();
+
+// ─── INTERACTIVE CAMERA VIEWFINDER (Scroll Pinning, Filmstrip & Multi-Shutter) ──────
+(function initCameraViewfinder() {
+  const viewfinderPinSection = document.getElementById('viewfinder-pin-section');
+  if (!viewfinderPinSection) return;
+
+  const filmstrip = document.getElementById('viewfinder-filmstrip');
+  const focusIndicator = document.getElementById('hud-focus-indicator');
+  const shutterFlash = document.getElementById('lcd-shutter-flash');
+  const shutterBtn = document.getElementById('camera-shutter-btn');
+  const cameraChassis = document.getElementById('camera-chassis');
+  const flashBulb = document.getElementById('camera-flash-bulb');
+
+  let currentSlideIndex = -1;
+  let lastClickedSlideIndex = -1;
+  let scrollTick = false;
+  let shutterTimeout1 = null;
+  let shutterTimeout2 = null;
+  let shutterTimeout3 = null;
+
+  window.addEventListener('scroll', () => {
+    if (!scrollTick) {
+      requestAnimationFrame(handleScroll);
+      scrollTick = true;
+    }
+  }, { passive: true });
+
+  function handleScroll() {
+    const rect = viewfinderPinSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+
+    // Check if the pin track is visible in viewport scroll bounds
+    if (rect.top < viewportHeight && rect.bottom > 0) {
+      const pinStart = rect.top + window.scrollY;
+      const pinEnd = pinStart + rect.height - viewportHeight;
+      const currentScroll = window.scrollY;
+
+      // Calculate scroll progress percentage (0.0 when top hits screen top, 1.0 when bottom leaves screen bottom)
+      let progress = (currentScroll - pinStart) / (rect.height - viewportHeight);
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Divide scroll progress into 3 zones for the 3 slides
+      let activeSlide = 0;
+      let zoneProgress = 0;
+
+      if (progress < 0.33) {
+        activeSlide = 0;
+        zoneProgress = progress / 0.33;
+      } else if (progress < 0.66) {
+        activeSlide = 1;
+        zoneProgress = (progress - 0.33) / 0.33;
+      } else {
+        activeSlide = 2;
+        zoneProgress = (progress - 0.66) / 0.34;
+      }
+
+      // 1. Shift the filmstrip translate position to snap/slide active photo
+      if (filmstrip) {
+        filmstrip.style.transform = `translateY(-${activeSlide * 33.333}%)`;
+      }
+
+      // 2. Subtle scroll-parallax shift inside the active slide's image
+      const activeImg = document.getElementById(`viewfinder-img-${activeSlide + 1}`);
+      if (activeImg) {
+        // Maps -10% to 5% inside its overflow frame
+        const yOffset = -10 + (zoneProgress * 15);
+        activeImg.style.transform = `translateY(${yOffset}%) scale(1.15)`;
+      }
+
+      // 3. Trigger shutter flash and mechanical recoil when active slide changes
+      if (activeSlide !== currentSlideIndex) {
+        currentSlideIndex = activeSlide;
+      }
+
+      // Check if we are inside the active pinning zone
+      if (progress > 0.03 && progress < 0.97) {
+        if (activeSlide !== lastClickedSlideIndex) {
+          lastClickedSlideIndex = activeSlide;
+          triggerViewfinderShutter();
+        }
+      } else {
+        // Reset when scrolled completely out of the active pin zone
+        lastClickedSlideIndex = -1;
+      }
+    }
+
+    scrollTick = false;
+  }
+
+  function triggerViewfinderShutter() {
+    // Clear any pending shutter timeouts to allow quick restarts
+    clearTimeout(shutterTimeout1);
+    clearTimeout(shutterTimeout2);
+    clearTimeout(shutterTimeout3);
+
+    // Reset styles immediately so they can re-animate from start state
+    if (focusIndicator) focusIndicator.classList.remove('focused');
+    if (shutterBtn) shutterBtn.classList.remove('clicked');
+    if (cameraChassis) cameraChassis.classList.remove('shutter-clicked');
+    if (flashBulb) flashBulb.classList.remove('active');
+
+    // Force reflow
+    void (focusIndicator ? focusIndicator.offsetWidth : 0);
+    void (shutterBtn ? shutterBtn.offsetWidth : 0);
+    void (cameraChassis ? cameraChassis.offsetWidth : 0);
+    void (flashBulb ? flashBulb.offsetWidth : 0);
+
+    // 1. Autofocus brackets lock green
+    if (focusIndicator) {
+      focusIndicator.classList.add('focused');
+    }
+
+    // 2. Trigger mechanical click and physical flash bulb overlay
+    shutterTimeout1 = setTimeout(() => {
+      // Shutter release button mechanical press
+      if (shutterBtn) shutterBtn.classList.add('clicked');
+      // Mechanical chassis recoil kickback
+      if (cameraChassis) cameraChassis.classList.add('shutter-clicked');
+      
+      // Physical flash bulb burst from the top of the camera
+      if (flashBulb) flashBulb.classList.add('active');
+
+      // Reset button and chassis recoil dial states
+      shutterTimeout2 = setTimeout(() => {
+        if (shutterBtn) shutterBtn.classList.remove('clicked');
+        if (cameraChassis) cameraChassis.classList.remove('shutter-clicked');
+      }, 150);
+
+      // Dismiss flash bulb and autofocus lock green border
+      shutterTimeout3 = setTimeout(() => {
+        if (focusIndicator) focusIndicator.classList.remove('focused');
+        if (flashBulb) flashBulb.classList.remove('active');
+      }, 400);
+
+    }, 220); // Autofocus lock delay simulation
   }
 })();
 

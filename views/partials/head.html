@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080808">
+  <meta name="theme-color" content="#B76E79">
   <title>{{TITLE}}</title>
   <meta name="description" content="{{DESCRIPTION}}">
   <link rel="canonical" href="{{CANONICAL}}">
@@ -30,6 +30,9 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Three.js Library for 3D Camera Shutter Animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -75,12 +78,6 @@
         activeTheme = 'light';
       }
       document.documentElement.setAttribute('data-theme', activeTheme);
-      
-      // Update theme-color meta tag immediately
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-      if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', activeTheme === 'light' ? '#F7F5F0' : '#080808');
-      }
     })();
   </script>
 </head>
