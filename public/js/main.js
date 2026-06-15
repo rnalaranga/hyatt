@@ -817,3 +817,4 @@ function triggerCameraFlash(onFlashComplete) {
 // ─── INIT ────────────────────────────────────────────────────────────────────────
 console.log('%c✦ HYATT PHOTOGRAPHY', 'color: #FFFFFF; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.3em;');
 console.log('%cNext Level Photography — Australia', 'color: #A8A29E; font-size: 0.85rem;');
+

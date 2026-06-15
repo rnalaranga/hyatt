@@ -1159,6 +1159,58 @@ button {
   border-radius: var(--radius-sm);
 }
 
+.modern-image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: perspective(1000px);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s ease;
+}
+
+.modern-image-frame:hover {
+  transform: translateY(-8px) perspective(1000px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(183, 110, 121, 0.15); /* Rose gold ambient glow */
+}
+
+.modern-anim-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  animation: modernBreathing 12s infinite alternate ease-in-out;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), filter 1s ease;
+  filter: brightness(0.95) contrast(1.05);
+}
+
+@keyframes modernBreathing {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.08) rotate(0.5deg); }
+}
+
+.modern-image-frame:hover .modern-anim-img {
+  animation-play-state: paused;
+  transform: scale(1.1) rotate(0deg);
+  filter: brightness(1.05) contrast(1.1);
+}
+
+.modern-glare {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.modern-image-frame:hover .modern-glare {
+  left: 200%;
+}
+
 .image-frame::after {
   content: '';
   position: absolute;
