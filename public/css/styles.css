@@ -2464,7 +2464,12 @@ a.contact-detail-value:hover {
   .grid-item--wide { grid-column: span 1; }
   .grid-item--tall { grid-row: span 1; }
   .form-row { grid-template-columns: 1fr; }
-  .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .footer-bottom { 
+    flex-direction: column; 
+    gap: 0.5rem; 
+    text-align: center; 
+    padding-bottom: 90px;
+  }
   .about-stats { gap: var(--space-lg); }
 
   .hero-title-line {
